@@ -16,13 +16,19 @@ import re
 images_list = []
 #iterate over the images
 #make sure your folder is called images and is in your main dir
+
+######## SAVE FILES LIKE BELOW:::: ##############
+## "genotype_treatment.jpg" ##
+## "DR5_0.8.jpg" ##
+## keep your units the same to just insta run this all through R for analysis
+
 for filepath in glob.iglob("images/*.jpg"):
     img = Image.open(filepath)
     #img in jpg works best just dont use format with transparency 
     arr = np.array(img)
     #print(arr)
     #arr = arr[:,:, :3] this was for RGBA to a len 3 array conversion to rem A
-    arr = matplotlib.colors.rgb_to_hsv(arr) #conv to hsv
+    arr = matplotlib.colors.rgb_to_hsv(arr/255) #conv to hsv
     
     #initiatlise pixel count
     n = 0 
@@ -34,11 +40,16 @@ for filepath in glob.iglob("images/*.jpg"):
     for row in range(0, len(arr)):
         for col in range(0, len(arr[row])):
             #blue is 114 to 178 hue value
-            if arr[row][col][0] <178/255 and arr[row][col][0] > 114/255 and arr[row][col][1] > 25/255:
-                #hsv values as percentage of 255
+            #below 25 saturation is white/ background - ignorable
+            if arr[row][col][0] <178/240 and arr[row][col][0] > 114/240 and arr[row][col][1] > 25/240:
+                #hsv values as percentage of vlaues taken from MSpaint
+                #cos that is what I used numbers from
+                #I have no photoshop I am but a poor student
                 n = n + 1
                 #to find low and high levels of expression
-                if arr[row][col][2] <120:
+                if arr[row][col][2] <120/240:
+                    #for some reason the lumi value is back to 0-255
+                    #roll with it
                     d = d + 1
                 else:
                     p = p + 1
