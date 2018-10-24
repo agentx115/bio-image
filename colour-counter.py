@@ -37,7 +37,6 @@ for filepath in glob.iglob("images/*.jpg"):
             if arr[row][col][0] <178/255 and arr[row][col][0] > 114/255 and arr[row][col][1] > 25/255:
                 #hsv values as percentage of 255
                 n = n + 1
-                print(arr[row][col][2])
                 #to find low and high levels of expression
                 if arr[row][col][2] <120:
                     d = d + 1
