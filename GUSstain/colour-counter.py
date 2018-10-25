@@ -26,7 +26,7 @@ for filepath in glob.iglob("images/*.jpg"):
     img = Image.open(filepath)
     #img in jpg works best just dont use format with transparency 
     arr = np.array(img)
-    #print(arr)
+    print(arr)
     #arr = arr[:,:, :3] this was for RGBA to a len 3 array conversion to rem A
     arr = matplotlib.colors.rgb_to_hsv(arr/255) #conv to hsv
     
@@ -60,6 +60,7 @@ for filepath in glob.iglob("images/*.jpg"):
     perc_blue = (n/total_pixels)*100
     perc_pale = (p/n)*100
     perc_dark = (d/n)*100
+    print(filepath)
     file_split = re.split(r"\\", filepath)
     jpg_split = re.split(".jpg", file_split[1])
     name_split = re.split("_", jpg_split[0])
