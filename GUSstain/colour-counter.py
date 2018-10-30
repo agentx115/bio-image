@@ -26,7 +26,6 @@ for filepath in glob.iglob("images/*.jpg"):
     img = Image.open(filepath)
     #img in jpg works best just dont use format with transparency 
     arr = np.array(img)
-    print(arr)
     #arr = arr[:,:, :3] this was for RGBA to a len 3 array conversion to rem A
     arr = matplotlib.colors.rgb_to_hsv(arr/255) #conv to hsv
     
@@ -41,8 +40,8 @@ for filepath in glob.iglob("images/*.jpg"):
         for col in range(0, len(arr[row])):
             #blue is 114 to 178 hue value
             #below 25 saturation is white/ background - ignorable
-            if arr[row][col][0] <178/240 and arr[row][col][0] > 114/240 and arr[row][col][1] > 25/240:
-                #hsv values as percentage of vlaues taken from MSpaint
+            if arr[row][col][0] <178/240 and arr[row][col][0] > 114/240 and arr[row][col][1] > 33/240:
+                #hsv values as percentage of values taken from MSpaint
                 #cos that is what I used numbers from
                 #I have no photoshop I am but a poor student
                 n = n + 1
@@ -53,24 +52,23 @@ for filepath in glob.iglob("images/*.jpg"):
                     d = d + 1
                 else:
                     p = p + 1
-            
+    print(filepath)        
     #calculate percentage cover of blue
     size = arr.shape
     total_pixels = size[0] * size[1]
     perc_blue = (n/total_pixels)*100
     perc_pale = (p/n)*100
     perc_dark = (d/n)*100
-    print(filepath)
     file_split = re.split(r"\\", filepath)
-    jpg_split = re.split(".jpg", file_split[1])
-    name_split = re.split("_", jpg_split[0])
+    jpg_split = file_split[:-4]
+    name_split = re.split("_", jpg_split)
     images_list.append([name_split[0], name_split[1], 
                         perc_blue, perc_pale, perc_dark])
     
-print(images_list)
+
     
 images_df = pd.DataFrame(images_list, 
-                         columns = ["Genotype", "Treatment","PercentBlue",
+                         columns = ["Treatment","PicNumber", "PercentBlue",
                                     "PercentPale","PercentDark"])
 
 print(images_df)
